@@ -20,33 +20,54 @@ This project analyzes an e-commerce sales dataset to extract meaningful business
 ### 1️⃣ Monthly Sales Analysis
 #### 📜 Code:
 ```python
-import pandas as pd
-import plotly.express as px
-
-data = pd.read_csv("dataset.csv")
 sales_by_month = data.groupby('Order Month')['Sales'].sum().reset_index()
-
 fig = px.line(sales_by_month, x='Order Month', y='Sales', title='Monthly Sales Analysis')
 fig.show()
 ```
 
 #### 🖼️ Visualization:
 ![Monthly Sales Analysis](images/monthly_sales.png)
-![image](https://github.com/user-attachments/assets/9af9847b-7fab-4e18-8388-d49325bd6489)
 
 #### 📊 Insights:
-- Sales fluctuate throughout the year, showing both growth and decline phases.
-- There is a significant increase around March, peaking above 200K.
-- Sales recover strongly in September, with a sharp rise towards the year’s end.
-- **Key Takeaways:**
-  - Seasonal trends exist, with notable peaks in March, September, and November.
-  - Businesses can leverage high-demand months with promotions and stock planning.
+- Sales peak in March, September, and November.
+- There is a mid-year slump in April–July.
+- **Action:** Plan promotions during peak months.
 
-### 2️⃣ Profit Analysis by Category
+### 2️⃣ Sales by Category
+#### 📜 Code:
+```python
+sales_by_category = data.groupby('Category')['Sales'].sum().reset_index()
+fig = px.pie(sales_by_category, values='Sales', names='Category', title='Sales by Category')
+fig.show()
+```
+
+#### 🖼️ Visualization:
+![Sales by Category](images/sales_by_category.png)
+
+#### 📊 Insights:
+- Technology leads sales (36.4%), followed by Furniture and Office Supplies.
+- **Action:** Focus marketing on high-selling categories.
+
+### 3️⃣ Sales by Sub-Category
+#### 📜 Code:
+```python
+sales_by_subcategory = data.groupby('Sub-Category')['Sales'].sum().reset_index()
+fig = px.bar(sales_by_subcategory, x='Sub-Category', y='Sales', title='Sales by Sub-Category')
+fig.show()
+```
+
+#### 🖼️ Visualization:
+![Sales by Sub-Category](images/sales_by_subcategory.png)
+
+#### 📊 Insights:
+- Chairs & Phones have the highest sales.
+- Art, Fasteners, and Labels show low demand.
+
+### 4️⃣ Profit Analysis by Category
 #### 📜 Code:
 ```python
 profit_by_category = data.groupby('Category')['Profit'].sum().reset_index()
-fig = px.pie(profit_by_category, values='Profit', names='Category', title='Profit Analysis by Category')
+fig = px.pie(profit_by_category, values='Profit', names='Category', title='Profit by Category')
 fig.show()
 ```
 
@@ -54,45 +75,40 @@ fig.show()
 ![Profit by Category](images/profit_by_category.png)
 
 #### 📊 Insights:
-- **Technology** contributes the most to profit (~50.8%).
-- **Office Supplies** follows at 42.8%, indicating steady demand.
-- **Furniture** lags behind with only 6.4%.
-- **Key Takeaways:**
-  - Technology and Office Supplies should be prioritized for maximizing profits.
-  - Furniture needs further investigation—pricing adjustments or cost reduction might be required.
+- Technology contributes the most profit (50.8%).
+- Furniture has the lowest profit margin.
 
-### 3️⃣ Sales Forecasting Using Exponential Smoothing
+### 5️⃣ Customer Segment Analysis
+#### 📜 Code:
+```python
+sales_profit_by_segment = data.groupby('Segment').agg({'Sales': 'sum', 'Profit': 'sum'}).reset_index()
+fig = px.bar(sales_profit_by_segment, x='Segment', y=['Sales', 'Profit'], barmode='group', title='Sales and Profit by Customer Segment')
+fig.show()
+```
+
+#### 🖼️ Visualization:
+![Customer Segment](images/customer_segment.png)
+
+#### 📊 Insights:
+- Consumer segment generates the highest sales.
+- Corporate customers yield higher profit ratios.
+
+### 6️⃣ Sales Forecasting Using Exponential Smoothing
 #### 📜 Code:
 ```python
 from statsmodels.tsa.holtwinters import ExponentialSmoothing
-import matplotlib.pyplot as plt
-
-data['Order Date'] = pd.to_datetime(data['Order Date'])
-data.set_index('Order Date', inplace=True)
-sales_data = data.resample('M').sum()
-
+sales_data = data.resample('M', on='Order Date').sum()
 model = ExponentialSmoothing(sales_data['Sales'], trend='add', seasonal='add', seasonal_periods=12).fit()
 sales_data['Forecast'] = model.predict(start=sales_data.index[0], end=sales_data.index[-1])
-
-plt.figure(figsize=(12, 6))
-plt.plot(sales_data.index, sales_data['Sales'], label="Actual Sales", marker='o')
-plt.plot(sales_data.index, sales_data['Forecast'], label="Forecasted Sales", linestyle="dashed")
-plt.xlabel("Month")
-plt.ylabel("Sales")
-plt.title("Sales Forecasting using Exponential Smoothing")
-plt.legend()
-plt.show()
+fig = px.line(sales_data, x=sales_data.index, y=['Sales', 'Forecast'], title='Sales Forecasting')
+fig.show()
 ```
 
 #### 🖼️ Visualization:
 ![Sales Forecast](images/sales_forecast.png)
 
 #### 📊 Insights:
-- The forecasted values align with actual sales trends.
-- Clear seasonal patterns exist, with peaks and dips at regular intervals.
-- **Key Takeaways:**
-  - Seasonal forecasting helps in stock optimization and marketing strategy planning.
-  - The model needs fine-tuning to improve prediction accuracy.
+- Forecasting aligns with sales trends, showing seasonal patterns.
 
 ## ✅ Recommendations
 1. **Optimize inventory** based on peak demand months.
