@@ -40,7 +40,7 @@ fig.show()
 ```
 
 #### 🖼️ Visualization:
-![Monthly Sales Analysis](images/newplot.png)
+![Monthly Sales Analysis](images/MonthlySales.png)
 
 #### 📊 Insights:
 - Sales peak in March, September, and November.
@@ -51,7 +51,13 @@ fig.show()
 #### 📜 Code:
 ```python
 sales_by_category = data.groupby('Category')['Sales'].sum().reset_index()
-fig = px.pie(sales_by_category, values='Sales', names='Category', title='Sales by Category')
+fig = px.pie(sales_by_category, 
+             values='Sales', 
+             names='Category', 
+             hole=0.5, 
+             color_discrete_sequence=px.colors.qualitative.Pastel)
+fig.update_traces(textposition='inside', textinfo='percent+label')
+fig.update_layout(title_text='Sales Analysis by Category', title_font=dict(size=24))
 fig.show()
 ```
 
