@@ -4,7 +4,7 @@
 This project analyzes an e-commerce sales dataset to extract meaningful business insights. The goal is to leverage Exploratory Data Analysis (EDA) and forecasting techniques to improve decision-making for inventory management, marketing, and operations.
 
 ## 📂 Data Source
-- The dataset contains transaction details, including:
+- The dataset **Sample - Superstore.csv** contains transaction details, including:
   - **Order Date, Ship Date, Customer Segment, Sales, Profit, Discount, Shipping Mode**
 - Stored in a **CSV file** and analyzed using **Jupyter Notebook**.
 
@@ -19,7 +19,8 @@ This project analyzes an e-commerce sales dataset to extract meaningful business
 
 A series of EDA techniques were applied to gain a deeper understanding of the data:
 
-Completed 9 analyses from Monthly Sales Analysis to Delivery Speed Analysis by Ship Mode:
+Completed 14 analyses from Monthly Sales Analysis to Delivery Speed Analysis by Ship Mode:
+
 1.	Monthly Sales Analysis
 2.	Sales Analysis by Category
 3.	Sales Analysis by Sub-Category
@@ -28,7 +29,12 @@ Completed 9 analyses from Monthly Sales Analysis to Delivery Speed Analysis by S
 6.	Profit Analysis by Sub-Category
 7.	Sales and Profit Analysis by Customer Segment
 8.	Sales-to-Profit Ratio Analysis
-9.	Delivery Speed Analysis by Ship Mode
+9.	Customer Lifetime Value (CLV) Analysis
+10.	Regional Sales Performance
+11.	Discount Effectiveness Analysis
+12.	Order Processing Efficiency Analysis
+13.	Sales Forecasting Using Exponential Smoothing
+14.	Delivery Speed Analysis by Ship Mode
 
 
 ### 1️⃣ Monthly Sales Analysis
@@ -54,7 +60,7 @@ fig.show()
 - Businesses can leverage high-demand months with promotions and stock planning.
 - The mid-year dip may indicate a need for marketing strategies or seasonal factors affecting demand.
 
-### 2️⃣ Sales by Category
+### 2️⃣ Sales Analysis by Category
 #### 📜 Code:
 ```python
 sales_by_category = data.groupby('Category')['Sales'].sum().reset_index()
@@ -81,7 +87,7 @@ fig.show()
 - Technology dominates sales, implying a high demand for tech-related products.
 - The sales distribution is fairly balanced, suggesting no single category overwhelmingly drives revenue.
 
-### 3️⃣ Sales by Sub-Category
+### 3️⃣ Sales Analysis by Sub-Category
 #### 📜 Code:
 ```python
 sales_by_subcategory = data.groupby('Sub-Category')['Sales'].sum().reset_index()
@@ -438,27 +444,5 @@ plt.show()
 - **Jupyter Notebook**
 - **Time Series Forecasting (Exponential Smoothing)**
 
-## 📂 Repository Structure
-```
-📂 E-commerce-Sales-Analysis
-│── 📜 README.md  # Project Overview
-│── 📜 dataset.csv  # Raw data file
-│── 📜 e_commerce_analysis.ipynb  # Jupyter Notebook with full analysis
-│── 📂 images/  # Visualizations from EDA
-│── 📂 results/  # Processed data and outputs
-```
-
-## 📢 How to Use
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-username/E-commerce-Sales-Analysis.git
-   ```
-2. Open Jupyter Notebook and run `e_commerce_analysis.ipynb`.
-3. Load `dataset.csv` and explore the insights.
-
-## 📧 Contact
-For questions or collaborations, feel free to reach out via [GitHub Issues](https://github.com/your-username/E-commerce-Sales-Analysis/issues).
-
----
 
 🚀 **Happy Analyzing!** 🎯
